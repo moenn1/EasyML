@@ -1,0 +1,33 @@
+<h2>Selected Features</h2>
+<ul>
+    {% for feature in selected_features %}
+    <li>{{ feature }}</li>
+    {% endfor %}
+</ul>
+<h2>Target Features</h2>
+<ul>
+    {% for feature in remaining_features %}
+    <li>{{ feature }}</li>
+    {% endfor %}
+</ul>
+
+<form method="POST" action="/output">
+    {% csrf_token %}
+    <h2>Select a Supervised Model</h2>
+    <select name="selected_supervised_model">
+        {% for model in supervised_models %}
+        <option value="{{ model }}">{{ model }}</option>
+        {% endfor %}
+    </select>
+    <h2>Or Select an Unsupervised Model</h2>
+    <select name="selected_unsupervised_model">
+        {% for model in unsupervised_models %}
+        <option value="{{ model }}">{{ model }}</option>
+        {% endfor %}
+    </select>
+    <h2>Train Split Size</h2>
+    <input type="text" name="train_split_size">
+    <h2>Test Split Size</h2>
+    <input type="text" name="test_split_size">
+    <input type="submit" value="Next">
+</form>

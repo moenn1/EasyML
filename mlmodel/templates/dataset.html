@@ -1,0 +1,17 @@
+
+<h1>Select the input features</h1>
+<form method="POST" action="/selectFeatures">
+    {% csrf_token %}
+    <table>
+      <tr>
+        {% for cell in header %}
+          <th>{{ cell }}</th>
+          <td>
+            <input type="checkbox" name="features" value="{{ cell }}">
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
+    <input type="submit" value="Select Features">
+  </form>
+  

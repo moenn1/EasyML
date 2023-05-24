@@ -1,0 +1,14 @@
+<form method="POST" action="/selectModel">
+    {% csrf_token %}
+    <table>
+      <tr>
+        {% for cell in header %}  <!-- Ensure this 'header' matches what you passed in the context -->
+          <th>{{ cell }}</th>
+          <td>
+            <input type="checkbox" name="features" value="{{ cell }}">
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
+    <input type="submit" value="Select More Features">
+  </form>

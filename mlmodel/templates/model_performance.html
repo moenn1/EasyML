@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Performance</title>
+</head>
+<body>
+    <h1>Model Performance</h1>
+
+    <h2>Supervised Model: {{ supervised_model }}</h2>
+    <p>Accuracy: {{ accuracy }}</p>
+    <p>Precision: {{ precision }}</p>
+    <p>Recall: {{ recall }}</p>
+    <p>F1-Score: {{ f1_score }}</p>
+
+    <h2>Unsupervised Model: {{ unsupervised_model }}</h2>
+    <p>Number of clusters: {{ unsupervised_model_clusters }}</p>
+    <p>Silhouette Score: {{ unsupervised_model_silhouette }}</p>
+
+    <!-- Add more details as needed -->
+
+</body>
+</html>
