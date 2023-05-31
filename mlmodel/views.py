@@ -9,8 +9,8 @@ from sklearn.model_selection import train_test_split
 from django.core.files.storage import default_storage
 from django.conf import settings
 from django.http import HttpResponse
-
-
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
 
 import csv
 import io
@@ -49,6 +49,7 @@ def load_dataset(request):
         header = next(reader)  # Gets the first row  
         file_name = default_storage.save('tmp/' + csv_file.name, csv_file)
         request.session['file_name'] = file_name  # Save the file name to the session
+        request.session['header'] = header
         # Now you can pass the header to your template
         return render(request, 'dataset.html', {'header': header})
     else:
@@ -76,12 +77,14 @@ def select_target(request):
 
 def select_model(request):
     if request.method == 'POST':
-        remaining_features = request.POST.getlist('features')
+        target_feature = request.POST.getlist('features')
         selected_features = request.session.get('selected_features', [])
-        request.session['remaining_features'] = remaining_features
+        request.session['target_feature'] = target_feature
         supervised_models = ['Linear Regression', 'Logistic Regression', 'Decision Tree', 'Random Forest', 'Support Vector Machine']
         unsupervised_models = ['K-Means', 'Hierarchical Clustering', 'PCA', 'SVD', 'LDA']
-        return render(request, 'select_model.html', {'supervised_models': supervised_models, 'unsupervised_models': unsupervised_models, 'selected_features': selected_features, 'remaining_features': remaining_features})
+        request.session['selected_features'] = selected_features
+        request.session['target_feature'] = target_feature
+        return render(request, 'select_model.html', {'supervised_models': supervised_models, 'unsupervised_models': unsupervised_models, 'selected_features': selected_features, 'target_feature': target_feature})
     else:
         return redirect('select_target')
 
@@ -96,7 +99,7 @@ def output(request):
         test_split_size = float(request.POST['test_split_size'])
 
         selected_features = request.session.get('selected_features', [])
-        remaining_features = request.session.get('remaining_features', [])
+        target_feature = request.session.get('target_feature')
 
         file_name = request.session.get('file_name', None)
         if file_name:
@@ -105,25 +108,25 @@ def output(request):
 
             # Extract relevant columns
             X = df[selected_features]
-            y = df[remaining_features]
+            y = df[target_feature]
 
             # Split the data
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_split_size, random_state=42)
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
             # Train your model
             # Depending on the selected model, you would train it differently
             # This is just an example with a linear regression model from sklearn
             if selected_supervised_model == 'Linear Regression':
-                from sklearn.linear_model import LinearRegression
-                from sklearn import metrics
+                print("Linear Regression")
+                print(X_train.head())
+                print(y_train.head())
                 model = LinearRegression()
                 model.fit(X_train, y_train)
                 y_pred = model.predict(X_test)
-                #CALCULATE THE ACCURACY, recall, precision, f1 score
+                   #CALCULATE THE ACCURACY, recall, precision, f1 score
                 accuracy = model.score(X_test, y_test)
-                mse = metrics.mean_squared_error(y_test, y_pred)
-                mae = metrics.mean_absolute_error(y_test, y_pred)
-                rmse = np.sqrt(mse)
+                print("Accuracy: ", accuracy)
+                
             
                 
 
@@ -143,14 +146,11 @@ def output(request):
                 'X_test': X_test,
                 'y_test': y_test,
                 'selected_features': selected_features,
-                'remaining_features': remaining_features,
+                'target_feature': target_feature,
                 'selected_supervised_model': selected_supervised_model,
                 'train_split_size': train_split_size,
                 'test_split_size': test_split_size,
                 'accuracy': accuracy,
-                'mse': mse,
-                'mae': mae,
-                'rmse': rmse,
             }
 
             return render(request, 'model_performance.html', context)
