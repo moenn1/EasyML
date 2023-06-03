@@ -111,7 +111,7 @@ def output(request):
             y = df[target_feature]
 
             # Split the data
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_split_size, random_state=42)
 
             # Train your model
             # Depending on the selected model, you would train it differently
@@ -126,6 +126,7 @@ def output(request):
                    #CALCULATE THE ACCURACY, recall, precision, f1 score
                 accuracy = model.score(X_test, y_test)
                 print("Accuracy: ", accuracy)
+                modelname = "Linear Regression"
                 
             
                 
@@ -142,7 +143,7 @@ def output(request):
             # For example, you might want to render a new template showing the model's performance
 
             context = {
-                'model': model,
+                'model': modelname,
                 'X_test': X_test,
                 'y_test': y_test,
                 'selected_features': selected_features,
@@ -158,38 +159,3 @@ def output(request):
             return redirect('load_dataset')
     else:
         return redirect('select_model')
-
-
-
-def predict(request):
-    if request.method == 'POST':
-        csv_file = request.FILES['csv_file']
-
-        # Read the CSV file from the POST request
-        df = pd.read_csv(csv_file)
-
-        #Feature in the first row
-        #df = df.rename(columns=df.iloc[0]).drop(df.index[0])
-        # Split the dataset and the target variable from the DataFrame
-        X = df.drop('target_variable', axis=1) # replace 'target_variable' with the name of your target column
-        y = df['target_variable'] # replace 'target_variable' with the name of your target column
-
-        # Split the dataset into the training set and test set
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2) # replace 0.2 with the test size
-
-        # Fit the model
-        model = LinearRegression()
-        model.fit(X_train, y_train)
-
-        # Predict the test set results
-        y_pred = model.predict(X_test)
-
-        # Evaluate the model
-        mse = metrics.mean_squared_error(y_test, y_pred)
-        rmse = np.sqrt(mse)
-        accuracy = model.score(X_test, y_test)
-
-        return JsonResponse({'mse': mse, 'rmse': rmse, 'accuracy': accuracy})
-    else:
-        # Handle the case where the method is not POST
-        return JsonResponse({'error': 'Invalid request method'})

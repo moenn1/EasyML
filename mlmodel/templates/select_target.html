@@ -1,14 +1,67 @@
-<form method="POST" action="/selectModel">
-    {% csrf_token %}
-    <table>
-      <tr>
-        {% for cell in header %}  <!-- Ensure this 'header' matches what you passed in the context -->
-          <th>{{ cell }}</th>
-          <td>
-            <input type="checkbox" name="features" value="{{ cell }}">
-          </td>
-        {% endfor %}
-      </tr>
-    </table>
-    <input type="submit" value="Select More Features">
-  </form>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EasyML</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .custom-btn {
+            border: none;
+            color: white;
+            text-align: center;
+            display: inline-block;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            padding: 15px 32px;
+            font-size: 16px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .custom-btn-submit {
+            background-color: #008CBA;
+        }
+        .custom-btn-submit:hover {
+            background-color: #007B9A;
+        }
+        .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+            background-color: #008CBA;
+        }
+    </style>
+</head>
+<body style="background-color: #f5f5f5;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h1 class="text-center">Select Target Feature</h1>
+                        <form method="POST" action="/selectModel" class="p-3">
+                            {% csrf_token %}
+                            <table class="table">
+                                {% for cell in header %}
+                                    <tr>
+                                        <th>{{ cell }}</th>
+                                        <td>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="{{ cell }}" name="features" value="{{ cell }}">
+                                                <label class="custom-control-label" for="{{ cell }}"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                            <div class="form-group text-center">
+                                <input type="submit" value="Select More Features" class="custom-btn custom-btn-submit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

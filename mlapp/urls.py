@@ -22,7 +22,6 @@ from mlmodel import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.index, name='index'),
-    path('predict', views.predict, name='predict'),
     path('loadDataset', views.load_dataset, name='load_dataset'),
     path('selectFeatures', views.select_features, name='select_features'),
     path('selectTarget', views.select_target, name='select_target'),
