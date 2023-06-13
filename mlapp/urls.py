@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from mlmodel import views
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -27,4 +28,5 @@ urlpatterns = [
     path('selectTarget', views.select_target, name='select_target'),
     path('selectModel', views.select_model, name='select_model'),
     path('output', views.output, name='output'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

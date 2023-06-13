@@ -10,8 +10,10 @@ from django.core.files.storage import default_storage
 from django.conf import settings
 from django.http import HttpResponse
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
 from sklearn import metrics
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 import csv
 import io
 import os
@@ -80,11 +82,11 @@ def select_model(request):
         target_feature = request.POST.getlist('features')
         selected_features = request.session.get('selected_features', [])
         request.session['target_feature'] = target_feature
-        supervised_models = ['Linear Regression', 'Logistic Regression', 'Decision Tree', 'Random Forest', 'Support Vector Machine']
-        unsupervised_models = ['K-Means', 'Hierarchical Clustering', 'PCA', 'SVD', 'LDA']
+        supervised_models = ['Linear Regression', 'KNN', 'SVM', 'CNN', 'Decision Tree', 'Random Forest', 'Gradient Boosting']
+        # unsupervised_models = ['K-Means', 'Hierarchical Clustering', 'PCA', 'SVD', 'LDA']
         request.session['selected_features'] = selected_features
         request.session['target_feature'] = target_feature
-        return render(request, 'select_model.html', {'supervised_models': supervised_models, 'unsupervised_models': unsupervised_models, 'selected_features': selected_features, 'target_feature': target_feature})
+        return render(request, 'select_model.html', {'supervised_models': supervised_models, 'selected_features': selected_features, 'target_feature': target_feature})
     else:
         return redirect('select_target')
 
@@ -127,32 +129,204 @@ def output(request):
                 accuracy = model.score(X_test, y_test)
                 print("Accuracy: ", accuracy)
                 modelname = "Linear Regression"
+                mse = mean_squared_error(y_test, y_pred)
+                # The root mean squared error
+                rmse = np.sqrt(mse)
+                # The coefficient of determination: 1 is perfect prediction
+                r2 = r2_score(y_test, y_pred)
+                plt.figure(figsize=(10, 5))
+                plt.plot(y_test, label='True')
+                plt.plot(y_pred, label='Predicted')
+                plt.legend()
+                # save the plot in the session
+                plt.savefig('media/line_plot.png')
+
+                # 2. Scatter plot
+                plt.figure(figsize=(10, 5))
+                plt.scatter(y_test, y_pred)
+                plt.xlabel('True Values')
+                plt.ylabel('Predicted Values')
+                plt.savefig('media/scatter_plot.png')
                 
+            elif selected_supervised_model == 'Decision Tree':
+                from sklearn.tree import DecisionTreeRegressor
+                model = DecisionTreeRegressor(random_state=0)
+                model.fit(X_train, y_train)
+                y_pred = model.predict(X_test)
+                accuracy = model.score(X_test, y_test)
+                modelname = "Decision Tree"
+                mse = mean_squared_error(y_test, y_pred)
+                # The root mean squared error
+                rmse = np.sqrt(mse)
+                # The coefficient of determination: 1 is perfect prediction
+                r2 = r2_score(y_test, y_pred)
+                plt.figure(figsize=(10, 5))
+                plt.plot(y_test, label='True')
+                plt.plot(y_pred, label='Predicted')
+                plt.legend()
+                plt.savefig('media/line_plot.png')
+
+                # 2. Scatter plot
+                plt.figure(figsize=(10, 5))
+                plt.scatter(y_test, y_pred)
+                plt.xlabel('True Values')
+                plt.ylabel('Predicted Values')
+                plt.savefig('media/scatter_plot.png')
+
+            elif selected_supervised_model == 'Random Forest':
+                from sklearn.ensemble import RandomForestRegressor
+                model = RandomForestRegressor(random_state=0)
+                model.fit(X_train, y_train)
+                y_pred = model.predict(X_test)
+                accuracy = model.score(X_test, y_test)
+                modelname = "Random Forest"
+                mse = mean_squared_error(y_test, y_pred)
+                # The root mean squared error
+                rmse = np.sqrt(mse)
+                # The coefficient of determination: 1 is perfect prediction
+                r2 = r2_score(y_test, y_pred)
+                plt.figure(figsize=(10, 5))
+                plt.plot(y_test, label='True')
+                plt.plot(y_pred, label='Predicted')
+                plt.legend()
+                plt.savefig('media/line_plot.png')
+
+                # 2. Scatter plot
+                plt.figure(figsize=(10, 5))
+                plt.scatter(y_test, y_pred)
+                plt.xlabel('True Values')
+                plt.ylabel('Predicted Values')
+                plt.savefig('media/scatter_plot.png')
+
+            elif selected_supervised_model == 'Gradient Boosting':
+                from sklearn.ensemble import GradientBoostingRegressor
+                model = GradientBoostingRegressor(random_state=0)
+                model.fit(X_train, y_train)
+                y_pred = model.predict(X_test)
+                accuracy = model.score(X_test, y_test)
+                modelname = "Gradient Boosting"
+                mse = mean_squared_error(y_test, y_pred)
+                # The root mean squared error
+                rmse = np.sqrt(mse)
+                # The coefficient of determination: 1 is perfect prediction
+                r2 = r2_score(y_test, y_pred)
+                plt.figure(figsize=(10, 5))
+                plt.plot(y_test, label='True')
+                plt.plot(y_pred, label='Predicted')
+                plt.legend()
+                plt.savefig('media/line_plot.png')
+
+                # 2. Scatter plot
+                plt.figure(figsize=(10, 5))
+                plt.scatter(y_test, y_pred)
+                plt.xlabel('True Values')
+                plt.ylabel('Predicted Values')
+                plt.savefig('media/scatter_plot.png')
+                
+            elif selected_supervised_model == 'KNN':
+                from sklearn.neighbors import KNeighborsRegressor
+                model = KNeighborsRegressor(n_neighbors=3)
+                model.fit(X_train, y_train)
+                y_pred = model.predict(X_test)
+                accuracy = model.score(X_test, y_test)
+                modelname = "KNN"
+                mse = mean_squared_error(y_test, y_pred)
+                # The root mean squared error
+                rmse = np.sqrt(mse)
+                # The coefficient of determination: 1 is perfect prediction
+                r2 = r2_score(y_test, y_pred)
+                plt.figure(figsize=(10, 5))
+                plt.plot(y_test, label='True')
+                plt.plot(y_pred, label='Predicted')
+                plt.legend()
+                plt.savefig('media/line_plot.png')
+
+                # 2. Scatter plot
+                plt.figure(figsize=(10, 5))
+                plt.scatter(y_test, y_pred)
+                plt.xlabel('True Values')
+                plt.ylabel('Predicted Values')
+                plt.savefig('media/scatter_plot.png')
+
+            elif selected_supervised_model == 'SVM':
+                from sklearn.svm import SVR
+                model = SVR(kernel='linear')
+                model.fit(X_train, y_train)
+                y_pred = model.predict(X_test)
+                accuracy = model.score(X_test, y_test)
+                modelname = "SVM"
+                mse = mean_squared_error(y_test, y_pred)
+                # The root mean squared error
+                rmse = np.sqrt(mse)
+                # The coefficient of determination: 1 is perfect prediction
+                r2 = r2_score(y_test, y_pred)
+                plt.figure(figsize=(10, 5))
+                plt.plot(y_test, label='True')
+                plt.plot(y_pred, label='Predicted')
+                plt.legend()
+                plt.savefig('media/line_plot.png')
+
+                # 2. Scatter plot
+                plt.figure(figsize=(10, 5))
+                plt.scatter(y_test, y_pred)
+                plt.xlabel('True Values')
+                plt.ylabel('Predicted Values')
+                plt.savefig('media/scatter_plot.png')
+                
+            elif selected_supervised_model == 'CNN':
+                from keras.models import Sequential
+                from keras.layers import Dense, Conv2D, Flatten
+                model = Sequential()
+                model.add(Conv2D(64, kernel_size=3, activation='relu', input_shape=(28,28,1)))
+                model.add(Conv2D(32, kernel_size=3, activation='relu'))
+                model.add(Flatten())
+                model.add(Dense(1))
+                model.compile(optimizer='adam', loss='mean_squared_error')
+                model.fit(X_train, y_train, epochs=3)
+                y_pred = model.predict(X_test)
+                accuracy = model.evaluate(X_test, y_test)
+                modelname = "CNN"
+                mse = mean_squared_error(y_test, y_pred)
+                # The root mean squared error
+                rmse = np.sqrt(mse)
+                # The coefficient of determination: 1 is perfect prediction
+                r2 = r2_score(y_test, y_pred)
+                plt.figure(figsize=(10, 5))
+                plt.plot(y_test, label='True')
+                plt.plot(y_pred, label='Predicted')
+                plt.legend()
+                plt.savefig('media/line_plot.png')
+
+                # 2. Scatter plot
+                plt.figure(figsize=(10, 5))
+                plt.scatter(y_test, y_pred)
+                plt.xlabel('True Values')
+                plt.ylabel('Predicted Values')
+                plt.savefig('media/scatter_plot.png')
+                history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, verbose=0)  # change this as per your requirements
+                plt.figure(figsize=(10, 5))
+                plt.plot(history.history['loss'], label='Training Loss')
+                plt.plot(history.history['val_loss'], label='Validation Loss')
+                plt.legend()
+                plt.savefig('media/training_vs_validation_loss_plot.png')
+
             
-                
-
-            # If it is unsupervised learning, you might cluster the data for example
-            # elif selected_unsupervised_model == 'K-Means':
-            #     from sklearn.cluster import KMeans
-            #     model = KMeans(n_clusters=3)
-            #     model.fit(X)
-
-            # You can continue this process for other models
-
-            # Now, you can use your model to make predictions, evaluate it, etc.
-            # For example, you might want to render a new template showing the model's performance
-
+            
             context = {
-                'model': modelname,
-                'X_test': X_test,
-                'y_test': y_test,
-                'selected_features': selected_features,
-                'target_feature': target_feature,
-                'selected_supervised_model': selected_supervised_model,
-                'train_split_size': train_split_size,
-                'test_split_size': test_split_size,
-                'accuracy': accuracy,
-            }
+                    'model': modelname,
+                    'X_test': X_test,
+                    'y_test': y_test,
+                    'selected_features': selected_features,
+                    'target_feature': target_feature,
+                    'selected_supervised_model': selected_supervised_model,
+                    'train_split_size': train_split_size,
+                    'test_split_size': test_split_size,
+                    'accuracy': accuracy,
+                    'mse': mse,
+                    'rmse': rmse,
+                    'r2': r2,
+
+                }
 
             return render(request, 'model_performance.html', context)
         else:

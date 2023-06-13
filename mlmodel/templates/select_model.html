@@ -44,30 +44,30 @@
                         </ul>
                         <form method="POST" action="/output" class="p-3">
                             {% csrf_token %}
-                            <div class="form-group">
+                            {% comment %} <div class="form-group">
                                 <h2>Select Model Type</h2>
                                 <select id="model_type" class="form-control">
                                     <option value="">Please select...</option>
                                     <option value="supervised">Supervised</option>
                                     <option value="unsupervised">Unsupervised</option>
                                 </select>
-                            </div>
+                            </div> {% endcomment %}
                             <div class="form-group">
                                 <h2>Select a Supervised Model</h2>
-                                <select name="selected_supervised_model" id="supervised_models" class="form-control" disabled>
+                                <select name="selected_supervised_model" id="supervised_models" class="form-control">
                                     {% for model in supervised_models %}
                                     <option value="{{ model }}">{{ model }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-                            <div class="form-group">
+                            {% comment %} <div class="form-group">
                                 <h2>Select an Unsupervised Model</h2>
                                 <select name="selected_unsupervised_model" id="unsupervised_models" class="form-control" disabled>
                                     {% for model in unsupervised_models %}
                                     <option value="{{ model }}">{{ model }}</option>
                                     {% endfor %}
                                 </select>
-                            </div>
+                            </div> {% endcomment %}
                             <div class="form-group">
                                 <h2>Train Split Size</h2>
                                 <input type="text" name="train_split_size" class="form-control">
@@ -90,7 +90,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+{% comment %} 
     <script>
     $(document).ready(function() {
         $('#model_type').on('change', function() {
@@ -107,7 +107,7 @@
                 $('#unsupervised_models').prop('disabled', true);
             }
         });
-    });
-    </script>
+    }); 
+    </script> {% endcomment %}
 </body>
 </html>
