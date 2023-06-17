@@ -3,6 +3,9 @@
 <head>
     <title>Model Performance</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <style>
         .custom-card {
             padding: 20px;
@@ -22,22 +25,84 @@
             text-align: center;
             margin-top: 20px;
         }
+        body::after {
+            content: "";
+            position: absolute;
+            top: 170px; 
+            left: 0;
+            width: 100%;
+            border-bottom: 3px solid #333; 
+        }
+
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #1F51FF;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .left-logo {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+        }
+        .right-logo {
+            position: absolute;
+            right: 20px;
+            top: 29px;
+        }
+        .gradient-card {
+            background: #00c6ff; /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #0072ff, #00c6ff); /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #0072ff, #00c6ff); /* modern standard syntax */
+        }
+        *{
+            font-family: 'Nunito', sans-serif;
+        }
+        .custom-card {
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        }
+        body{
+            margin-bottom: 100px;
+        }
+        .titleModel{
+            color: #00008B;
+        }
+
     </style>
 </head>
 <body style="background-color: #f5f5f5;">
-    <div class="container">
+    <div class="left-logo">
+        <img src="media/uae.png" alt="logo" width="120px">
+    </div>
+    <div class="right-logo">
+        <img src="media/logofst.png" alt="logo" width="120px">
+    </div>
+    <div class="container ">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="custom-card mt-5">
-                    <h1 class="text-center">Model Performance</h1>
+                <div class="row text-center">
+                    <div class="col">
+                        <img src="media/logopng.png" alt="logo" width="200px">
+                    </div>
+                </div>
+                <div class="custom-card mt-5" style="background-color: #E0E0E0;">
+                    <h1 class="text-center font-weight-bold titleModel">Model Performance</h1>
 
-                    <div class="custom-card">
-                        <h2>Model: {{ model }}</h2>
+                    <div class="custom-card gradient-card text-white">
+                        <h2 class="mb-3">Model: {{ model }}</h2>
                         <p>Accuracy: {{ accuracy }}</p>
                         <p>Mean Squared Error: {{ mse }}</p>
                         <p>Root Mean Squared Error: {{ rmse }}</p>
                         <p>R-Squared: {{ r2 }}</p>
-                        <h2 class="mt-5">Plots</h2>
+                    </div>
+                    <h1 class="text-center font-weight-bold titleModel mt-3">Plots</h1>
+
+                    <div class="custom-card gradient-card text-white text-center">
+                        
                         <div id="plots">
                             <h3 class="plot-title">Line Plot</h3>
                             <img src="media/line_plot.png" alt="Line plot">
@@ -56,7 +121,9 @@
             </div>
         </div>
     </div>
-
+    <footer>
+        2023 &#169 Made by Badr TAKTOUR 
+    </footer>
     <!-- JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

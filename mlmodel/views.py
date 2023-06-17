@@ -21,25 +21,6 @@ import os
 def index(request):
     return render(request, 'index.html')
 
-# def load_dataset(request):
-#     if request.method == 'POST':
-#         csv_file = request.FILES['csv_file']
-#         file_name = default_storage.save('tmp/' + csv_file.name, csv_file)
-#         request.session['file_name'] = file_name
-#         data_set = csv_file.read().decode('UTF-8')
-#         io_string = io.StringIO(data_set)
-#         reader = csv.reader(io_string, delimiter=',', quotechar="|")
-#         header = next(reader)  # Gets the first row
-
-#         # Save the header in the session
-#         request.session['header'] = header
-
-#         # Now you can pass the header to your template
-#         return render(request, 'dataset.html', {'header': header})
-#     else:
-#         # Display the form
-#         return render(request, 'index.html')
-
 
 def load_dataset(request):
     if request.method == 'POST':
@@ -114,6 +95,7 @@ def output(request):
 
             # Split the data
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_split_size, random_state=42)
+            
 
             # Train your model
             # Depending on the selected model, you would train it differently
@@ -134,11 +116,22 @@ def output(request):
                 rmse = np.sqrt(mse)
                 # The coefficient of determination: 1 is perfect prediction
                 r2 = r2_score(y_test, y_pred)
+                y_test = y_test.iloc[:, 0]  # assuming y_test is a DataFrame with one column
+                y_pred = y_pred.ravel()  # assuming y_pred is a numpy array
+                sort_indices = np.argsort(y_test)
+                sorted_y_test = y_test.iloc[sort_indices]
+                sorted_y_pred = y_pred[sort_indices]
+
+
                 plt.figure(figsize=(10, 5))
-                plt.plot(y_test, label='True')
-                plt.plot(y_pred, label='Predicted')
+                plt.plot(range(len(sorted_y_test)), sorted_y_test, label='Actual Stress')
+                plt.plot(range(len(sorted_y_pred)), sorted_y_pred, label='Predicted Stress')
+                plt.xlabel('Index')
+                plt.ylabel('Stress')
+                plt.title('Actual vs. Predicted Stress (Linear Regression)')
                 plt.legend()
-                # save the plot in the session
+
+
                 plt.savefig('media/line_plot.png')
 
                 # 2. Scatter plot
@@ -160,10 +153,22 @@ def output(request):
                 rmse = np.sqrt(mse)
                 # The coefficient of determination: 1 is perfect prediction
                 r2 = r2_score(y_test, y_pred)
+                y_test = y_test.iloc[:, 0]  # assuming y_test is a DataFrame with one column
+                y_pred = y_pred.ravel()  # assuming y_pred is a numpy array
+                sort_indices = np.argsort(y_test)
+                sorted_y_test = y_test.iloc[sort_indices]
+                sorted_y_pred = y_pred[sort_indices]
+
+
                 plt.figure(figsize=(10, 5))
-                plt.plot(y_test, label='True')
-                plt.plot(y_pred, label='Predicted')
+                plt.plot(range(len(sorted_y_test)), sorted_y_test, label='Actual Stress')
+                plt.plot(range(len(sorted_y_pred)), sorted_y_pred, label='Predicted Stress')
+                plt.xlabel('Index')
+                plt.ylabel('Stress')
+                plt.title('Actual vs. Predicted Stress (Decision Tree)')
                 plt.legend()
+
+
                 plt.savefig('media/line_plot.png')
 
                 # 2. Scatter plot
@@ -185,10 +190,22 @@ def output(request):
                 rmse = np.sqrt(mse)
                 # The coefficient of determination: 1 is perfect prediction
                 r2 = r2_score(y_test, y_pred)
+                y_test = y_test.iloc[:, 0]  # assuming y_test is a DataFrame with one column
+                y_pred = y_pred.ravel()  # assuming y_pred is a numpy array
+                sort_indices = np.argsort(y_test)
+                sorted_y_test = y_test.iloc[sort_indices]
+                sorted_y_pred = y_pred[sort_indices]
+
+
                 plt.figure(figsize=(10, 5))
-                plt.plot(y_test, label='True')
-                plt.plot(y_pred, label='Predicted')
+                plt.plot(range(len(sorted_y_test)), sorted_y_test, label='Actual Stress')
+                plt.plot(range(len(sorted_y_pred)), sorted_y_pred, label='Predicted Stress')
+                plt.xlabel('Index')
+                plt.ylabel('Stress')
+                plt.title('Actual vs. Predicted Stress (Random Forest)')
                 plt.legend()
+
+
                 plt.savefig('media/line_plot.png')
 
                 # 2. Scatter plot
@@ -210,10 +227,22 @@ def output(request):
                 rmse = np.sqrt(mse)
                 # The coefficient of determination: 1 is perfect prediction
                 r2 = r2_score(y_test, y_pred)
+                y_test = y_test.iloc[:, 0]  # assuming y_test is a DataFrame with one column
+                y_pred = y_pred.ravel()  # assuming y_pred is a numpy array
+                sort_indices = np.argsort(y_test)
+                sorted_y_test = y_test.iloc[sort_indices]
+                sorted_y_pred = y_pred[sort_indices]
+
+
                 plt.figure(figsize=(10, 5))
-                plt.plot(y_test, label='True')
-                plt.plot(y_pred, label='Predicted')
+                plt.plot(range(len(sorted_y_test)), sorted_y_test, label='Actual Stress')
+                plt.plot(range(len(sorted_y_pred)), sorted_y_pred, label='Predicted Stress')
+                plt.xlabel('Index')
+                plt.ylabel('Stress')
+                plt.title('Actual vs. Predicted Stress (Gradient Boosting)')
                 plt.legend()
+
+
                 plt.savefig('media/line_plot.png')
 
                 # 2. Scatter plot
@@ -234,11 +263,24 @@ def output(request):
                 # The root mean squared error
                 rmse = np.sqrt(mse)
                 # The coefficient of determination: 1 is perfect prediction
+                
                 r2 = r2_score(y_test, y_pred)
+                y_test = y_test.iloc[:, 0]  # assuming y_test is a DataFrame with one column
+                y_pred = y_pred.ravel()  # assuming y_pred is a numpy array
+                sort_indices = np.argsort(y_test)
+                sorted_y_test = y_test.iloc[sort_indices]
+                sorted_y_pred = y_pred[sort_indices]
+
+
                 plt.figure(figsize=(10, 5))
-                plt.plot(y_test, label='True')
-                plt.plot(y_pred, label='Predicted')
+                plt.plot(range(len(sorted_y_test)), sorted_y_test, label='Actual Stress')
+                plt.plot(range(len(sorted_y_pred)), sorted_y_pred, label='Predicted Stress')
+                plt.xlabel('Index')
+                plt.ylabel('Stress')
+                plt.title('Actual vs. Predicted Stress (KNN Regression)')
                 plt.legend()
+
+
                 plt.savefig('media/line_plot.png')
 
                 # 2. Scatter plot
@@ -260,10 +302,22 @@ def output(request):
                 rmse = np.sqrt(mse)
                 # The coefficient of determination: 1 is perfect prediction
                 r2 = r2_score(y_test, y_pred)
+                y_test = y_test.iloc[:, 0]  # assuming y_test is a DataFrame with one column
+                y_pred = y_pred.ravel()  # assuming y_pred is a numpy array
+                sort_indices = np.argsort(y_test)
+                sorted_y_test = y_test.iloc[sort_indices]
+                sorted_y_pred = y_pred[sort_indices]
+
+
                 plt.figure(figsize=(10, 5))
-                plt.plot(y_test, label='True')
-                plt.plot(y_pred, label='Predicted')
+                plt.plot(range(len(sorted_y_test)), sorted_y_test, label='Actual Stress')
+                plt.plot(range(len(sorted_y_pred)), sorted_y_pred, label='Predicted Stress')
+                plt.xlabel('Index')
+                plt.ylabel('Stress')
+                plt.title('Actual vs. Predicted Stress (SVM)')
                 plt.legend()
+
+
                 plt.savefig('media/line_plot.png')
 
                 # 2. Scatter plot
@@ -291,10 +345,22 @@ def output(request):
                 rmse = np.sqrt(mse)
                 # The coefficient of determination: 1 is perfect prediction
                 r2 = r2_score(y_test, y_pred)
+                y_test = y_test.iloc[:, 0]  # assuming y_test is a DataFrame with one column
+                y_pred = y_pred.ravel()  # assuming y_pred is a numpy array
+                sort_indices = np.argsort(y_test)
+                sorted_y_test = y_test.iloc[sort_indices]
+                sorted_y_pred = y_pred[sort_indices]
+
+
                 plt.figure(figsize=(10, 5))
-                plt.plot(y_test, label='True')
-                plt.plot(y_pred, label='Predicted')
+                plt.plot(range(len(sorted_y_test)), sorted_y_test, label='Actual Stress')
+                plt.plot(range(len(sorted_y_pred)), sorted_y_pred, label='Predicted Stress')
+                plt.xlabel('Index')
+                plt.ylabel('Stress')
+                plt.title('Actual vs. Predicted Stress (CNN)')
                 plt.legend()
+
+
                 plt.savefig('media/line_plot.png')
 
                 # 2. Scatter plot

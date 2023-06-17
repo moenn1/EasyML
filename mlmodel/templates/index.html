@@ -4,7 +4,13 @@
     <title>EasyML</title>
     <!-- CSS only -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <style>
+        *{
+            font-family: 'Nunito', sans-serif;
+        }
         .custom-btn {
             border: none;
             color: white;
@@ -33,13 +39,87 @@
         .custom-btn-submit:hover {
             background-color: #007B9A;
         }
+
+        .card {
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        }
+
+        .gradient-card {
+            background: #00c6ff; /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #0072ff, #00c6ff); /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #0072ff, #00c6ff); /* modern standard syntax */
+        }
+
+        body {
+            background: #f5f5f5; /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #f5f5f5, #D3D3D3); /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #f5f5f5, #D3D3D3); /* modern standard syntax */
+        }
+
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #1F51FF;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .left-logo {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+        }
+        .right-logo {
+            position: absolute;
+            right: 20px;
+            top: 29px;
+        }
+        .tagline {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00008B;
+            margin-top: 0px;
+            margin-bottom: 10px;
+        }
+
+        .bottom-text {
+            font-size: 18px;
+            color: #00008B;
+            margin-top: 40px;
+            text-align: center;
+            font-weight: bold;
+        }
+        body::after {
+            content: "";
+            position: absolute;
+            top: 170px; 
+            left: 0;
+            width: 100%;
+            border-bottom: 3px solid #333; 
+        }
     </style>
 </head>
-<body style="background-color: #f5f5f5;">
+<body>
+    <div class="left-logo">
+        <img src="media/uae.png" alt="logo" width="120px">
+    </div>
+    <div class="right-logo">
+        <img src="media/logofst.png" alt="logo" width="120px">
+    </div>
     <div class="container">
+        <div class="row text-center">
+            <div class="col">
+                <img src="media/logopng.png" alt="logo" width="200px">
+                <p class="tagline">Welcome to EasyML - Simplifying Machine Learning</p>
+    
+            </div>
+            
+        </div>
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card mt-5">
+            <div class="col-md-8">
+                <div class="card gradient-card mt-5">
                     <div class="card-body">
                         <form method="POST" action="/loadDataset" enctype="multipart/form-data" class="p-3">
                             {% csrf_token %}
@@ -55,7 +135,16 @@
                 </div>
             </div>
         </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 bottom-text">
+                <p>EasyML is designed to make machine learning accessible to all. By providing a simple interface to upload and analyze your datasets, we make the complex world of machine learning easy and approachable. Explore, analyze, and unleash the power of AI with EasyML.</p>
+            </div>
+        </div>
     </div>
+
+    <footer>
+        2023 &#169 Made by Badr TAKTOUR 
+    </footer>
 
     <!-- JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

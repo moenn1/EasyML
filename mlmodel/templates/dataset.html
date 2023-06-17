@@ -3,7 +3,18 @@
 <head>
     <title>EasyML</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     <style>
+        *{
+            font-family: 'Nunito', sans-serif;
+        }
+        .card {
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        }
         .custom-btn {
             border: none;
             color: white;
@@ -25,29 +36,81 @@
         .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
             background-color: #008CBA;
         }
+        .gradient-card {
+            background: #00c6ff; /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #0072ff, #00c6ff); /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #0072ff, #00c6ff); /* modern standard syntax */
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            top: 170px; 
+            left: 0;
+            width: 100%;
+            border-bottom: 3px solid #333; 
+        }
+
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #1F51FF;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .left-logo {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+        }
+        .right-logo {
+            position: absolute;
+            right: 20px;
+            top: 29px;
+        }
+        body{
+            margin-bottom: 100px;
+        }
     </style>
 </head>
+
 <body style="background-color: #f5f5f5;">
+    <div class="left-logo">
+        <img src="media/uae.png" alt="logo" width="120px">
+    </div>
+    <div class="right-logo">
+        <img src="media/logofst.png" alt="logo" width="120px">
+    </div>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card mt-5">
+                <div class="row text-center">
+                    <div class="col">
+                        <img src="media/logopng.png" alt="logo" width="200px">
+                    </div>
+                </div>
+                <div class="card mt-5 gradient-card">
                     <div class="card-body">
-                        <h1 class="text-center">Select The Input Features</h1>
+                        <h1 class="text-center text-white mb-3">Select The Input Features</h1>
                         <form method="POST" action="/selectFeatures" class="p-3">
+                            <button type="button" id="selectAll" class="btn btn-primary mb-3">Select All</button>
                             {% csrf_token %}
                             <table class="table">
                                 {% for cell in header %}
                                     <tr>
-                                        <th>{{ cell }}</th>
+                                        <th class="text-white">{{ cell }}</th>
                                         <td>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="{{ cell }}" name="features" value="{{ cell }}">
+                                            <div class="custom-control custom-checkbox ">
+                                                <input type="checkbox" class="custom-control-input " id="{{ cell }}" name="features" value="{{ cell }}">
                                                 <label class="custom-control-label" for="{{ cell }}"></label>
                                             </div>
                                         </td>
                                     </tr>
                                 {% endfor %}
+                                
                             </table>
                             <div class="form-group text-center">
                                 <input type="submit" value="Select Features" class="custom-btn custom-btn-submit">
@@ -59,8 +122,19 @@
         </div>
     </div>
 
+    <footer>
+        2023 &#169 Made by Badr TAKTOUR 
+    </footer>
+    <script>
+        $(document).ready(function() {
+            // When the "Select All" button is clicked
+            $('#selectAll').on('click', function() {
+                // Check all checkboxes
+                $('input[name="features"]').prop('checked', true);
+            });
+        });
+        </script>
     <!-- JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
