@@ -130,8 +130,6 @@ def output(request):
                 plt.ylabel('Stress')
                 plt.title('Actual vs. Predicted Stress (Linear Regression)')
                 plt.legend()
-
-
                 plt.savefig('media/line_plot.png')
 
                 # 2. Scatter plot
